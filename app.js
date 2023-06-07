@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const port = process.env.API_PORT;
+const port = process.env.PORT || 3000;
 
 // Welcome message on root route
 app.get('/', (req, res)=> {
@@ -30,4 +30,6 @@ app.use('/api/characters', charactersRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/deaths', deathsRouter);
 
-app.listen(port);
+app.listen(port, "0.0.0.0", () => {
+    console.log("Server is running");
+});
