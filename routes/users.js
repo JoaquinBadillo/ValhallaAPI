@@ -20,7 +20,7 @@ router.post('/login', (req, res)=>{
     });
 });
 
-router.post("/users", (req, res) => {
+router.post("/", (req, res) => {
     db.none('CALL create_user($1, $2, $3)',
         [req.body["username"], req.body["email"], req.body["password"]])
     .then(() => {
