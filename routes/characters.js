@@ -3,6 +3,34 @@ import { db } from "../database.js";
 
 const router = Router();
 
+router.get('/stats', (req, res)=>{
+    db.any('SELECT * FROM stats')
+    .then((data) => {
+        res.json(data);
+    })
+    .catch((error) => {
+        res.status(500);
+        res.json(error);
+    });
+});
+
+router.get('/:username', (req, res)=> {
+    db.one('SELECT character_id FROM characters INNER JOIN users USING (character_id) WHERE username = $1',
+        [req.params["username"]])
+    .then((data) => {
+        res.json(data);
+    })
+    .catch((error) => {
+        if (error.message === "No data returned from the query.") {
+            res.status(404);
+        }
+        else {
+            res.status(500);
+        }
+        res.json(error);
+    });   
+});
+
 router.get('/:character_id/stats', (req, res)=>{
     db.one('SELECT * FROM stats INNER JOIN classes USING (stats_id) INNER JOIN characters USING (class_id) WHERE character_id = $1', 
         [req.params["character_id"]])
@@ -19,5 +47,6 @@ router.get('/:character_id/stats', (req, res)=>{
         res.json(error);
     });
 });
+
 
 export default router;
