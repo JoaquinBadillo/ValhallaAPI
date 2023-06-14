@@ -15,7 +15,7 @@ router.get('/stats', (req, res)=>{
 });
 
 router.get('/:username', (req, res)=> {
-    db.one('SELECT character_id FROM characters INNER JOIN users USING (character_id) WHERE username = $1',
+    db.one('SELECT character_id FROM users INNER JOIN games USING (game_id) INNER JOIN characters USING (character_id) WHERE username = $1',
         [req.params["username"]])
     .then((data) => {
         res.json(data);
