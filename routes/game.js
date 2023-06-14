@@ -1,13 +1,19 @@
 import { Router } from "express";
 import { db } from "../database.js";
+import cors from 'cors'
 
 const router = Router();
+
+const corsOptions = {
+    origin: 'https://joaquinbadillo.github.io/BreakIntoValhalla/',  // Define the allowed origin for CORS requests
+    optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
+}
 
 function randint(max) {
     return Math.floor((Math.random() * max)) + 1;
 }
 
-router.post('/', (req, res)=>{
+router.post('/', cors(corsOptions), (req, res)=>{
     const seed = randint(80000);
 
     db.none(`CALL create_game($1, $2, ${seed})`, 

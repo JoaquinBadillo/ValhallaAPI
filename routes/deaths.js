@@ -1,9 +1,15 @@
 import { Router } from "express";
 import { db } from "../database.js";
+import cors from 'cors'
 
 const router = Router();
 
-router.get('/:type', (req, res)=>{
+const corsOptions = {
+    origin: 'https://joaquinbadillo.github.io/BreakIntoValhalla/',  // Define the allowed origin for CORS requests
+    optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
+}
+
+router.get('/:type', cors(corsOptions), (req, res)=>{
     const validDeathPlaces = new Set(["death_place", "death_cause"])
     
     if (!validDeathPlaces.has(req.params["type"])) {
@@ -27,7 +33,7 @@ router.get('/:type', (req, res)=>{
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', cors(corsOptions), (req, res) => {
     db.none('CALL add_death($1, $2, $3)',
         [req.body["username"], req.body["room"], req.body["killer"]])
     .then(() => {

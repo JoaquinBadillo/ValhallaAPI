@@ -1,9 +1,15 @@
 import { Router } from "express";
 import { db } from "../database.js";
+import cors from 'cors'
 
 const router = Router();
 
-router.get('/stats', (req, res)=>{
+const corsOptions = {
+    origin: 'https://joaquinbadillo.github.io/BreakIntoValhalla/',  // Define the allowed origin for CORS requests
+    optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
+}
+
+router.get('/stats', cors(corsOptions), (req, res)=>{
     db.any('SELECT * FROM stats')
     .then((data) => {
         res.json(data);
@@ -14,7 +20,7 @@ router.get('/stats', (req, res)=>{
     });
 });
 
-router.get('/:username', (req, res)=> {
+router.get('/:username', cors(corsOptions), (req, res)=> {
     db.one('SELECT character_id FROM users INNER JOIN games USING (game_id) INNER JOIN characters USING (character_id) WHERE username = $1',
         [req.params["username"]])
     .then((data) => {
@@ -31,7 +37,7 @@ router.get('/:username', (req, res)=> {
     });   
 });
 
-router.get('/:character_id/stats', (req, res)=>{
+router.get('/:character_id/stats', cors(corsOptions), (req, res)=>{
     db.one('SELECT * FROM stats INNER JOIN classes USING (stats_id) INNER JOIN characters USING (class_id) WHERE character_id = $1', 
         [req.params["character_id"]])
     .then((data) => {

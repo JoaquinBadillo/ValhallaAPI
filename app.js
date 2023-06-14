@@ -1,13 +1,21 @@
 import * as dotenv from 'dotenv';
 import express from 'express';
-import fs from 'fs';
 import cors from 'cors';
+
+import ratelimit from 'express-rate-limit'
+
+const limiter = ratelimit({
+    // (8 requests per 10 minutes)
+    windowMs: 10 * 60 * 1000,
+    max: 8 
+})
 
 dotenv.config();
 
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(limiter);
+app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
