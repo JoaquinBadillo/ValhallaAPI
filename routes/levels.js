@@ -5,7 +5,7 @@ import cors from 'cors'
 const router = Router();
 
 const corsOptions = {
-    origin: 'https://joaquinbadillo.github.io/BreakIntoValhalla/',  // Define the allowed origin for CORS requests
+    origin: 'https://joaquinbadillo.github.io/BreakIntoValhalla/*',  // Define the allowed origin for CORS requests
     optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
 }
 
