@@ -37,6 +37,18 @@ router.get('/:username', (req, res)=> {
     });   
 });
 
+router.put('/:username', (req, res)=>{
+    db.none('UPDATE users JOIN games USING (game_id) SET character_id = $1 WHERE username = $2', 
+        [req.body["stats_id"], req.body["character_id"]])
+    .then(() => {
+        res.json({'message': 'Stats updated correctly!'});
+    })
+    .catch((error) => {
+        res.status(500);
+        res.json(error);
+    });
+});
+
 router.get('/:character_id/stats', (req, res)=>{
     db.one('SELECT * FROM stats INNER JOIN classes USING (stats_id) INNER JOIN characters USING (class_id) WHERE character_id = $1', 
         [req.params["character_id"]])
