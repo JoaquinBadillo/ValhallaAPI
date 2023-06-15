@@ -38,7 +38,7 @@ router.get('/:username', (req, res)=> {
 });
 
 router.put('/:username', (req, res)=>{
-    db.none('UPDATE users JOIN games USING (game_id) SET character_id = $1 WHERE username = $2', 
+    db.none('UPDATE games as g SET character_id = $1 FROM users AS u WHERE u.username = $2', 
         [req.body["character_id"], req.params["username"]])
     .then(() => {
         res.json({'message': 'Stats updated correctly!'});
