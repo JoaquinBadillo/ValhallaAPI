@@ -5,15 +5,20 @@ import cors from 'cors';
 import ratelimit from 'express-rate-limit'
 
 const limiter = ratelimit({
-    // (8 requests per 10 minutes)
+    // (20 requests per 5 minutes)
     windowMs: 10 * 60 * 1000,
-    max: 8 
+    max: 20 
 })
 
 dotenv.config();
 
+const corsOptions = {
+    origin: "https://joaquinbadillo.github.io",  // Define the allowed origin for CORS requests
+    optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
+}
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(limiter);
 app.use(express.json());
 
