@@ -9,7 +9,7 @@ const corsOptions = {
     optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
 }
 
-router.get('/stats', cors(corsOptions), (req, res)=>{
+router.get('/stats', (req, res)=>{
     db.any('SELECT * FROM stats')
     .then((data) => {
         res.json(data);
@@ -20,7 +20,7 @@ router.get('/stats', cors(corsOptions), (req, res)=>{
     });
 });
 
-router.get('/:username', cors(corsOptions), (req, res)=> {
+router.get('/:username', (req, res)=> {
     db.one('SELECT character_id FROM users INNER JOIN games USING (game_id) INNER JOIN characters USING (character_id) WHERE username = $1',
         [req.params["username"]])
     .then((data) => {
@@ -37,7 +37,7 @@ router.get('/:username', cors(corsOptions), (req, res)=> {
     });   
 });
 
-router.get('/:character_id/stats', cors(corsOptions), (req, res)=>{
+router.get('/:character_id/stats', (req, res)=>{
     db.one('SELECT * FROM stats INNER JOIN classes USING (stats_id) INNER JOIN characters USING (class_id) WHERE character_id = $1', 
         [req.params["character_id"]])
     .then((data) => {

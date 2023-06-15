@@ -13,7 +13,7 @@ function randint(max) {
     return Math.floor((Math.random() * max)) + 1;
 }
 
-router.post('/', cors(corsOptions), (req, res)=>{
+router.post('/', (req, res)=>{
     const seed = randint(80000);
 
     db.none(`CALL create_game($1, $2, ${seed})`, 

@@ -9,7 +9,7 @@ const corsOptions = {
     optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
 }
 
-router.get('/:type', cors(corsOptions), (req, res)=>{
+router.get('/:type', (req, res)=>{
     const validDeathPlaces = new Set(["death_place", "death_cause"])
     
     if (!validDeathPlaces.has(req.params["type"])) {
@@ -33,7 +33,7 @@ router.get('/:type', cors(corsOptions), (req, res)=>{
     });
 });
 
-router.post('/', cors(corsOptions), (req, res) => {
+router.post('/', (req, res) => {
     db.none('CALL add_death($1, $2, $3)',
         [req.body["username"], req.body["room"], req.body["killer"]])
     .then(() => {

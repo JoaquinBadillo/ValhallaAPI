@@ -9,7 +9,7 @@ const corsOptions = {
     optionsSuccessStatus: 200  // Define the success status code for CORS preflight requests
 }
 
-router.get('/leaderboards/:type', cors(corsOptions), (req, res)=>{
+router.get('/leaderboards/:type', (req, res)=>{
     const validLeaderboards = new Set(["top_kills", "top_weekly_elims"])
     
     if (!validLeaderboards.has(req.params["type"])) {
@@ -33,7 +33,7 @@ router.get('/leaderboards/:type', cors(corsOptions), (req, res)=>{
     });
 });
 
-router.put('/', cors(corsOptions), (req, res)=>{
+router.put('/', (req, res)=>{
     db.none('UPDATE metrics AS m SET kills = m.kills + $1, wins = m.wins + $2 FROM users AS u WHERE u.username = $3 AND u.metrics_id = m.metrics_id', 
         [req.body["kills"], req.body["wins"], req.body["username"]])
     .then(() => {
