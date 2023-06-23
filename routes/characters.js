@@ -10,7 +10,7 @@ const corsOptions = {
 }
 
 router.get('/stats', (req, res)=>{
-    db.any('SELECT * FROM stats')
+    db.any('SELECT * FROM stats ORDER BY stats_id ASC')
     .then((data) => {
         res.json(data);
     })
